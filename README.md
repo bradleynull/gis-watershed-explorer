@@ -4,7 +4,7 @@ A focused GIS application for computing watershed characteristics across a user-
 
 ## Demo
 
-![Demo Video](https://github.com/bradleynull/gis-watershed-explorer/releases/download/v1.0.0-demo/watershed-app-demo.mp4)
+![Watershed Analysis Demo](./docs/watershed-demo.gif)
 
 *See the application in action: draw a rectangle on the map, compute watershed grids with configurable resolution, and toggle between watershed area and time of concentration heatmaps with real-time statistics.*
 
