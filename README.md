@@ -2,6 +2,12 @@
 
 A focused GIS application for computing watershed characteristics across a user-selected region.
 
+## Demo
+
+[📹 Watch Demo Video](./docs/watershed-app-demo.mp4)
+
+*See the application in action: draw a rectangle on the map, compute watershed grids with configurable resolution, and toggle between watershed area and time of concentration heatmaps with real-time statistics.*
+
 ## Features
 
 - **Interactive Rectangle Drawing**: Draw a rectangle on the map to define your analysis area
