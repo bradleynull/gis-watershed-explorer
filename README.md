@@ -138,3 +138,7 @@ npm run build
 - Recommended starting resolution: 100-200m
 - DEM data is fetched from USGS 3DEP (falls back to synthetic data if unavailable)
 - Each grid point computes its own watershed independently
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
