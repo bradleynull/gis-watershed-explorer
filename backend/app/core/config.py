@@ -9,6 +9,10 @@ class Settings(BaseSettings):
     nhd_base_url: str = "https://hydro.nationalmap.gov/arcgis/rest/services"
     fema_base_url: str = "https://hazards.fema.gov/gis/nfhl/rest/services/public"
     osm_base_url: str = "https://api.openstreetmap.org"
+    
+    # Cesium ion configuration
+    cesium_ion_token: str = ""
+    cesium_terrain_asset_id: int = 1  # World Terrain
 
 
 settings = Settings()

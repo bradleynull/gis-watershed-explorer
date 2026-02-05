@@ -1,3 +1,5 @@
+export type ViewMode = '2d' | '3d'
+
 export interface MapViewState {
   center: [number, number]
   zoom: number

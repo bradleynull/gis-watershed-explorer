@@ -6,7 +6,7 @@ interface WatershedHeatmapLayerProps {
 }
 
 // Jet colormap: blue (low) -> cyan -> green -> yellow -> red (high)
-function jetColor(value: number): string {
+export function jetColor(value: number): string {
   // value should be 0-1
   const v = Math.max(0, Math.min(1, value))
   

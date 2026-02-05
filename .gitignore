@@ -31,6 +31,8 @@ yarn-debug.log*
 yarn-error.log*
 dist/
 .cache/
+vite.config.js
+*.tsbuildinfo
 
 # IDEs
 .vscode/

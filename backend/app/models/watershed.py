@@ -1,11 +1,15 @@
 from dataclasses import dataclass
-from typing import List, Any, Set, Tuple
+from typing import List, Any, Set, Tuple, Optional
+import logging
 from app.data.nhd_client import NHDClient
 from app.core.geo_utils import bbox_from_center
 import numpy as np
 from app.data.usgs_client import USGSClient
+from app.data.cesium_terrain_client import CesiumTerrainClient
 from shapely.geometry import Polygon as ShapelyPolygon
 from pyproj import Geod
+
+logger = logging.getLogger(__name__)
 
 
 # D8 flow direction encoding: 1=E, 2=SE, 3=S, 4=SW, 5=W, 6=NW, 7=N, 8=NE
@@ -72,9 +76,15 @@ class WatershedGrid:
 class WatershedModel:
     """Watershed delineation and river data."""
 
-    def __init__(self, nhd_client: NHDClient = None, usgs_client: USGSClient = None):
+    def __init__(
+        self, 
+        nhd_client: NHDClient = None, 
+        usgs_client: USGSClient = None,
+        cesium_client: CesiumTerrainClient = None
+    ):
         self._nhd = nhd_client or NHDClient()
         self._usgs = usgs_client or USGSClient()
+        self._cesium = cesium_client or CesiumTerrainClient()
 
     def get_rivers_in_bbox(
         self, minx: float, miny: float, maxx: float, maxy: float
@@ -374,8 +384,15 @@ class WatershedModel:
         half_height_m = (dlat_deg * m_per_deg_lat) / 2.0
         radius_m = math.sqrt(half_width_m ** 2 + half_height_m ** 2) * 1.2  # 20% margin
         
-        # Fetch DEM once for entire bbox
-        dem = self._usgs.fetch_dem(center_lat, center_lon, radius_m)
+        # Fetch DEM once for entire bbox - try Cesium first, fall back to USGS
+        dem = self._cesium.fetch_dem(center_lat, center_lon, radius_m)
+        terrain_source = "cesium_world_terrain"
+        
+        if dem is None:
+            logger.info("Cesium terrain unavailable, falling back to USGS 3DEP")
+            dem = self._usgs.fetch_dem(center_lat, center_lon, radius_m)
+            terrain_source = "usgs_3dep"
+        
         if dem is None:
             return WatershedGrid(features=[], metadata={"error": "DEM unavailable"})
         
@@ -506,6 +523,7 @@ class WatershedModel:
             "min_tc_min": round(min_tc, 2),
             "max_tc_min": round(max_tc, 2),
             "dem_cell_size_m": round(cell_width * m_per_deg_lon, 2),
+            "terrain_source": terrain_source,
         }
         
         return WatershedGrid(features=features, metadata=metadata)

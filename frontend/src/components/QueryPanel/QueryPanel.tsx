@@ -109,6 +109,11 @@ export function QueryPanel({
               <div>Grid points: {String(heatmapMetadata.point_count || 0)}</div>
               <div>Grid spacing: {String(heatmapMetadata.grid_spacing_m || 0)}m</div>
               <div>DEM resolution: {String(heatmapMetadata.dem_cell_size_m || 0)}m</div>
+              {heatmapMetadata.terrain_source && typeof heatmapMetadata.terrain_source === 'string' ? (
+                <div style={{ fontSize: 12, color: '#666', marginTop: 4 }}>
+                  Source: {heatmapMetadata.terrain_source.replace(/_/g, ' ').toUpperCase()}
+                </div>
+              ) : null}
               <div style={{ marginTop: 8, fontWeight: 600 }}>
                 {heatmapMode === 'area' ? 'Area Range:' : 'Tc Range:'}
               </div>

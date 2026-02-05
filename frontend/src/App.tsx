@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react'
 import { MapContainer, type Bbox } from './components/Map/MapContainer'
+import { CesiumViewer } from './components/Map/CesiumViewer'
 import { LocationInput } from './components/Controls/LocationInput'
 import { QueryPanel } from './components/QueryPanel/QueryPanel'
 import * as api from './services/api'
@@ -32,6 +33,7 @@ function App() {
   const [heatmapMode, setHeatmapMode] = useState<'area' | 'tc'>('area')
   const [gridSpacing, setGridSpacing] = useState(100)
   const [isLoading, setIsLoading] = useState(false)
+  const [viewMode, setViewMode] = useState<'2d' | '3d'>('2d')
 
   // Memoize onBboxDrawn to prevent RectangleDrawHandler useEffect from re-running on every render
   const handleBboxDrawn = useCallback((bbox: Bbox) => {
@@ -82,18 +84,61 @@ function App() {
           />
           Satellite
         </label>
+        <div style={{ display: 'flex', gap: 4, marginLeft: 'auto' }}>
+          <button
+            onClick={() => setViewMode('2d')}
+            style={{
+              padding: '6px 12px',
+              background: viewMode === '2d' ? '#0066cc' : '#f0f0f0',
+              color: viewMode === '2d' ? 'white' : 'black',
+              border: '1px solid #ccc',
+              borderRadius: 4,
+              cursor: 'pointer',
+            }}
+            data-testid="view-mode-2d"
+          >
+            2D
+          </button>
+          <button
+            onClick={() => setViewMode('3d')}
+            style={{
+              padding: '6px 12px',
+              background: viewMode === '3d' ? '#0066cc' : '#f0f0f0',
+              color: viewMode === '3d' ? 'white' : 'black',
+              border: '1px solid #ccc',
+              borderRadius: 4,
+              cursor: 'pointer',
+            }}
+            data-testid="view-mode-3d"
+          >
+            3D
+          </button>
+        </div>
       </header>
       <div style={{ flex: 1, display: 'flex', position: 'relative' }}>
-        <MapContainer
-          center={center}
-          zoom={zoom}
-          layers={layers}
-          rectangleDrawMode={rectangleDrawMode}
-          onBboxDrawn={handleBboxDrawn}
-          heatmapData={heatmapData}
-          drawnRectangle={drawnRectangle}
-          heatmapMode={heatmapMode}
-        />
+        {viewMode === '2d' ? (
+          <MapContainer
+            center={center}
+            zoom={zoom}
+            layers={layers}
+            rectangleDrawMode={rectangleDrawMode}
+            onBboxDrawn={handleBboxDrawn}
+            heatmapData={heatmapData}
+            drawnRectangle={drawnRectangle}
+            heatmapMode={heatmapMode}
+          />
+        ) : (
+          <CesiumViewer
+            center={center}
+            zoom={zoom}
+            layers={layers}
+            rectangleDrawMode={rectangleDrawMode}
+            onBboxDrawn={handleBboxDrawn}
+            heatmapData={heatmapData}
+            drawnRectangle={drawnRectangle}
+            heatmapMode={heatmapMode}
+          />
+        )}
         <QueryPanel
           rectangleDrawMode={rectangleDrawMode}
           heatmapMode={heatmapMode}

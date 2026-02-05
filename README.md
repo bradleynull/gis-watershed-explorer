@@ -10,6 +10,8 @@ A focused GIS application for computing watershed characteristics across a user-
 
 ## Features
 
+- **2D & 3D Visualization**: Toggle between 2D (Leaflet) and 3D (Cesium) views with a single button
+- **High-Quality 3D Terrain**: Cesium World Terrain with 10-30m resolution for realistic visualization
 - **Interactive Rectangle Drawing**: Draw a rectangle on the map to define your analysis area
 - **Watershed Grid Computation**: Computes watershed area (hectares) and time of concentration (minutes) for a grid of points
 - **Dual Heatmap Visualization**: Toggle between watershed area and time of concentration heatmaps
@@ -28,7 +30,8 @@ A focused GIS application for computing watershed characteristics across a user-
 
 ### Frontend
 - **React + TypeScript**: UI framework
-- **Leaflet**: Interactive mapping
+- **Leaflet**: 2D interactive mapping
+- **Cesium + Resium**: 3D globe and terrain visualization
 - **Vite**: Build tool
 
 ## Running the Application
@@ -53,14 +56,29 @@ npm run dev
 
 Frontend will be available at http://localhost:5173
 
+### Cesium 3D Setup (Required for 3D View)
+
+To enable the 3D visualization mode, you need a free Cesium ion token:
+
+1. Create account at https://cesium.com/ion/signup
+2. Get your token at https://ion.cesium.com/tokens
+3. Add to `frontend/.env`:
+   ```bash
+   VITE_CESIUM_ION_TOKEN=your_token_here
+   ```
+4. Restart the frontend dev server
+
+**See detailed setup instructions**: [docs/CESIUM_SETUP.md](docs/CESIUM_SETUP.md)
+
 ## Usage
 
 1. **Navigate to location**: Enter latitude and longitude, then click "Load Map"
-2. **Enable drawing mode**: Check the "Draw watershed heatmap" checkbox
-3. **Draw rectangle**: Click and drag on the map to define your analysis area
-4. **View results**: The heatmap will automatically compute and display
-5. **Toggle display**: Switch between "Watershed Area" and "Time of Concentration" in the side panel
-6. **Adjust resolution**: Use the slider to change grid spacing (redraw to apply)
+2. **Choose view mode**: Click "2D" or "3D" button in the top-right header
+3. **Enable drawing mode**: Check the "Draw watershed heatmap" checkbox
+4. **Draw rectangle**: Click and drag on the map to define your analysis area
+5. **View results**: The heatmap will automatically compute and display
+6. **Toggle display**: Switch between "Watershed Area" and "Time of Concentration" in the side panel
+7. **Adjust resolution**: Use the slider to change grid spacing (redraw to apply)
 
 ## API Endpoint
 
